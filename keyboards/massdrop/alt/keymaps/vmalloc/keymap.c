@@ -148,15 +148,15 @@ void rgb_matrix_indicators_user(void) {
     if (rgb_matrix_get_flags() & LED_FLAG_KEYLIGHT) {
         switch (biton32(layer_state)) {
             case 3:
-                rgb_matrix_set_color(22, 0xFF, 0xFF, 0);
-                rgb_matrix_set_color(23, 0xFF, 0xFF, 0);
-                rgb_matrix_set_color(24, 0xFF, 0xFF, 0);
-                rgb_matrix_set_color(37, 0xFF, 0xFF, 0);
-                rgb_matrix_set_color(38, 0xFF, 0xFF, 0);
-                rgb_matrix_set_color(39, 0xFF, 0xFF, 0);
-                rgb_matrix_set_color(51, 0xFF, 0xFF, 0);
-                rgb_matrix_set_color(52, 0xFF, 0xFF, 0);
-                rgb_matrix_set_color(53, 0xFF, 0xFF, 0);
+                rgb_matrix_set_color(22, 0, 0, 0xFF);
+                rgb_matrix_set_color(23, 0, 0xFF, 0xFF);
+                rgb_matrix_set_color(24, 0, 0, 0xFF);
+                rgb_matrix_set_color(37, 0, 0xFF, 0xFF);
+                rgb_matrix_set_color(38, 0, 0xFF, 0xFF);
+                rgb_matrix_set_color(39, 0, 0xFF, 0xFF);
+                rgb_matrix_set_color(51, 0, 0, 0xFF);
+                rgb_matrix_set_color(52, 0, 0xFF, 0xFF);
+                rgb_matrix_set_color(53, 0, 0, 0xFF);
                 break;
             case 4:
                 rgb_matrix_set_color_all(0xFF, 0, 0);
