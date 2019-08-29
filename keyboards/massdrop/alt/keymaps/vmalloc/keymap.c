@@ -145,22 +145,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 void rgb_matrix_indicators_user(void) {
+#define COLORIZE(key) rgb_matrix_set_color(key, 0xFF, 0, 0)
+
     if (rgb_matrix_get_flags() & LED_FLAG_KEYLIGHT) {
         switch (biton32(layer_state)) {
             case 3:
-                rgb_matrix_set_color(22, 0, 0, 0xFF);
-                rgb_matrix_set_color(23, 0, 0xFF, 0xFF);
-                rgb_matrix_set_color(24, 0, 0, 0xFF);
-                rgb_matrix_set_color(37, 0, 0xFF, 0xFF);
-                rgb_matrix_set_color(38, 0, 0xFF, 0xFF);
-                rgb_matrix_set_color(39, 0, 0xFF, 0xFF);
-                rgb_matrix_set_color(51, 0, 0, 0xFF);
-                rgb_matrix_set_color(52, 0, 0xFF, 0xFF);
-                rgb_matrix_set_color(53, 0, 0, 0xFF);
+                COLORIZE(22);
+                COLORIZE(23);
+                COLORIZE(24);
+                COLORIZE(37);
+                COLORIZE(38);
+                COLORIZE(39);
+                COLORIZE(51);
+                COLORIZE(52);
+                COLORIZE(53);
                 break;
             case 4:
                 rgb_matrix_set_color_all(0xFF, 0, 0);
                 break;
         }
     }
+#undef COLORIZE
 }
