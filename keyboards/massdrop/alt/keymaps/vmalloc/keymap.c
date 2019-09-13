@@ -12,50 +12,70 @@ enum alt_keycodes {
 
 #define TG_NKRO MAGIC_TOGGLE_NKRO  // Toggle 6KRO / NKRO mode
 
-enum { TD_DEL_F9 = 0 };
+enum { TD_DEL_F9 = 0, TD_3_F3 };
 
-qk_tap_dance_action_t tap_dance_actions[] = {[TD_DEL_F9] = ACTION_TAP_DANCE_DOUBLE(KC_DEL, KC_F9)};
+qk_tap_dance_action_t tap_dance_actions[] = {
+    [TD_DEL_F9] = ACTION_TAP_DANCE_DOUBLE(KC_DEL, KC_F9),
+    [TD_3_F3]   = ACTION_TAP_DANCE_DOUBLE(KC_3, KC_F3),
+};
 
 keymap_config_t keymap_config;
 
+enum {
+    LAYER_DEFAULT,
+    LAYER_FN,
+    LAYER_CAPS,
+    LAYER_MAINT,
+    LAYER_RESET,
+    LAYER_BLENDER,
+};
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [0] = LAYOUT(
+    [LAYER_DEFAULT] = LAYOUT(
         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, TD(TD_DEL_F9), \
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS, KC_HOME, \
-        MO(2),   KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,  KC_PGUP, \
+        MO(LAYER_CAPS),   KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,  KC_PGUP, \
         KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,          KC_UP,   KC_PGDN, \
-        KC_LCTL, KC_LGUI, KC_LALT,                            KC_SPC,                             KC_RALT, MO(1),   KC_LEFT, KC_DOWN, KC_RGHT  \
+        KC_LCTL, KC_LGUI, KC_LALT,                            KC_SPC,                             KC_RALT, MO(LAYER_FN),   KC_LEFT, KC_DOWN, KC_RGHT  \
     ),
-    [1] = LAYOUT(
+    [LAYER_FN] = LAYOUT(
         KC_GRV,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______, KC_MUTE, \
         _______, RGB_SPD, RGB_VAI, RGB_SPI, RGB_HUI, RGB_SAI, _______, U_T_AUTO,U_T_AGCR,_______, KC_PSCR, KC_SLCK, KC_PAUS, _______, KC_END, \
         _______, RGB_RMOD,RGB_VAD, RGB_MOD, RGB_HUD, RGB_SAD, _______, _______, _______, _______, _______, _______,          _______, KC_VOLU, \
         _______, RGB_TOG, _______, _______, _______, MD_BOOT, TG_NKRO, DBG_TOG, _______, _______, _______, _______,          KC_PGUP, KC_VOLD, \
         _______, _______, _______,                            _______,                            _______, _______, KC_HOME, KC_PGDN, KC_END  \
     ),
-    [2] = LAYOUT(
+    [LAYER_CAPS] = LAYOUT(
         _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______, _______, \
         MO(3),   _______, _______, _______, _______, _______, _______, KC_PGDN, KC_UP,   KC_PGUP, _______, _______, _______, _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,          _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______, _______, \
         _______, _______, _______,                            _______,                            _______, _______, _______, _______, _______  \
     ),
-    [3] = LAYOUT(
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+    [LAYER_MAINT] = LAYOUT(
+        TO(LAYER_DEFAULT), TO(LAYER_BLENDER), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, KC_KP_7, KC_KP_8, KC_KP_9, _______, _______, _______, _______, _______, \
         _______, _______, _______, _______, MO(4)  , _______, _______, KC_KP_4, KC_KP_5, KC_KP_6, _______, _______,          _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, KC_KP_1, KC_KP_2, KC_KP_3, KC_PSLS, _______,          _______, _______, \
         _______, _______, _______,                            KC_KP_0,                            KC_PDOT, _______, _______, _______, _______  \
         ),
 
-    [4] = LAYOUT(
+    [LAYER_RESET] = LAYOUT(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, RESET,   _______, _______, _______, _______, _______, _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______, _______, \
         _______, _______, _______,                            _______,                            _______, _______, _______, _______, _______  \
         ),
+    [LAYER_BLENDER] = LAYOUT(
+        _______, _______, _______, TD(TD_3_F3), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______, _______, \
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          KC_KP_7, _______, \
+        _______, _______, _______,                            _______,                            _______, _______, KC_KP_1, KC_KP_5, KC_KP_3 \
+        ),
+
     /*
     [X] = LAYOUT(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
@@ -148,26 +168,41 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-void rgb_matrix_indicators_user(void) {
-#define COLORIZE(key) rgb_matrix_set_color(key, 0xFF, 0, 0)
+enum { LED_INDEX_ESC = 0, LED_INDEX_1, LED_INDEX_2, LED_INDEX_3, LED_INDEX_4, LED_INDEX_5, LED_INDEX_6, LED_INDEX_7, LED_INDEX_8, LED_INDEX_9, LED_INDEX_0, LED_INDEX_MINS, LED_INDEX_EQL, LED_INDEX_BSPC, LED_INDEX_DEL, LED_INDEX_TAB, LED_INDEX_Q, LED_INDEX_W, LED_INDEX_E, LED_INDEX_R, LED_INDEX_T, LED_INDEX_Y, LED_INDEX_U, LED_INDEX_I, LED_INDEX_O, LED_INDEX_P, LED_INDEX_LBRC, LED_INDEX_RBRC, LED_INDEX_BSLS, LED_INDEX_HOME, LED_INDEX_CAPS, LED_INDEX_A, LED_INDEX_S, LED_INDEX_D, LED_INDEX_F, LED_INDEX_G, LED_INDEX_H, LED_INDEX_J, LED_INDEX_K, LED_INDEX_L, LED_INDEX_SCLN, LED_INDEX_QUOT, LED_INDEX_ENT, LED_INDEX_PGUP, LED_INDEX_LSFT, LED_INDEX_Z, LED_INDEX_X, LED_INDEX_C, LED_INDEX_V, LED_INDEX_B, LED_INDEX_N, LED_INDEX_M, LED_INDEX_COMM, LED_INDEX_DOT, LED_INDEX_SLSH, LED_INDEX_RSFT, LED_INDEX_UP, LED_INDEX_PGDN, LED_INDEX_LCTL, LED_INDEX_LGUI, LED_INDEX_LALT, LED_INDEX_SPC, LED_INDEX_RALT, LED_INDEX_FN, LED_INDEX_LEFT, LED_INDEX_DOWN, LED_INDEX_RGHT };
 
+#define COLORIZE_RED(key) rgb_matrix_set_color(key, 0xFF, 0, 0)
+
+void rgb_matrix_indicators_user(void) {
     if (rgb_matrix_get_flags() & LED_FLAG_KEYLIGHT) {
         switch (biton32(layer_state)) {
-            case 3:
-                COLORIZE(22);
-                COLORIZE(23);
-                COLORIZE(24);
-                COLORIZE(37);
-                COLORIZE(38);
-                COLORIZE(39);
-                COLORIZE(51);
-                COLORIZE(52);
-                COLORIZE(53);
+            case LAYER_CAPS:
+                COLORIZE_RED(LED_INDEX_U);
+                COLORIZE_RED(LED_INDEX_I);
+                COLORIZE_RED(LED_INDEX_O);
+                COLORIZE_RED(LED_INDEX_J);
+                COLORIZE_RED(LED_INDEX_K);
+                COLORIZE_RED(LED_INDEX_L);
+                COLORIZE_RED(LED_INDEX_M);
+                COLORIZE_RED(LED_INDEX_COMM);
+                COLORIZE_RED(LED_INDEX_DOT);
                 break;
-            case 4:
+            case LAYER_RESET:
                 rgb_matrix_set_color_all(0xFF, 0, 0);
+                break;
+            case LAYER_BLENDER:
+                rgb_matrix_set_color(LED_INDEX_DEL, 0xFF, 0xFF, 0xFF);
+                rgb_matrix_set_color(LED_INDEX_ESC, 0xFF, 0xFF, 0xFF);
+                rgb_matrix_set_color(LED_INDEX_X, 0xFF, 0, 0);
+                rgb_matrix_set_color(LED_INDEX_Y, 0, 0xFF, 0);
+                rgb_matrix_set_color(LED_INDEX_Z, 0, 0xFF, 0xFF);
+                rgb_matrix_set_color(LED_INDEX_LCTL, 0xFF, 0, 0xFF);
+                rgb_matrix_set_color(LED_INDEX_LALT, 0xFF, 0, 0xFF);
+
+                rgb_matrix_set_color(LED_INDEX_S, 0x30, 0x30, 0x30);
+                rgb_matrix_set_color(LED_INDEX_R, 0x30, 0x30, 0x30);
+                rgb_matrix_set_color(LED_INDEX_G, 0x30, 0x30, 0x30);
+
                 break;
         }
     }
-#undef COLORIZE
 }
