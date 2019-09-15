@@ -175,7 +175,7 @@ enum { LED_INDEX_ESC = 0, LED_INDEX_1, LED_INDEX_2, LED_INDEX_3, LED_INDEX_4, LE
 void rgb_matrix_indicators_user(void) {
     if (rgb_matrix_get_flags() & LED_FLAG_KEYLIGHT) {
         switch (biton32(layer_state)) {
-            case LAYER_CAPS:
+            case LAYER_MAINT:
                 COLORIZE_RED(LED_INDEX_U);
                 COLORIZE_RED(LED_INDEX_I);
                 COLORIZE_RED(LED_INDEX_O);
