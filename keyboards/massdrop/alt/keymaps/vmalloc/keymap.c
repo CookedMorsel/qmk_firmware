@@ -105,7 +105,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // clang-format on
 
 // Runs just one time when the keyboard initializes.
-void matrix_init_user(void){};
+void matrix_init_user(void) {
+    rgb_matrix_config.speed = 0;
+    rgb_matrix_increase_speed();
+}
 
 // Runs constantly in the background, in a loop.
 void matrix_scan_user(void){};
