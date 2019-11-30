@@ -1,5 +1,7 @@
 #include QMK_KEYBOARD_H
 
+
+
 enum alt_keycodes {
     U_T_AUTO = SAFE_RANGE,  // USB Extra Port Toggle Auto Detect / Always Active
     U_T_AGCR,               // USB Toggle Automatic GCR control
@@ -191,54 +193,87 @@ enum { LED_INDEX_ESC = 0, LED_INDEX_1, LED_INDEX_2, LED_INDEX_3, LED_INDEX_4, LE
 
 #define COLORIZE_RED(key) rgb_matrix_set_color(key, 0xFF, 0, 0)
 
-void rgb_matrix_indicators_user(void) {
-    if (rgb_matrix_get_flags() & LED_FLAG_KEYLIGHT) {
-        switch (biton32(layer_state)) {
-            case LAYER_MAINT:
-                COLORIZE_RED(LED_INDEX_U);
-                COLORIZE_RED(LED_INDEX_I);
-                COLORIZE_RED(LED_INDEX_O);
-                COLORIZE_RED(LED_INDEX_J);
-                COLORIZE_RED(LED_INDEX_K);
-                COLORIZE_RED(LED_INDEX_L);
-                COLORIZE_RED(LED_INDEX_M);
-                COLORIZE_RED(LED_INDEX_COMM);
-                COLORIZE_RED(LED_INDEX_DOT);
-                break;
-            case LAYER_RESET:
-                rgb_matrix_set_color_all(0xFF, 0, 0);
-                break;
-            case LAYER_BLENDER:
-                rgb_matrix_set_color(LED_INDEX_DEL, 0xFF, 0xFF, 0xFF);
-                rgb_matrix_set_color(LED_INDEX_ESC, 0xFF, 0xFF, 0xFF);
-                rgb_matrix_set_color(LED_INDEX_X, 0xFF, 0, 0);
-                rgb_matrix_set_color(LED_INDEX_Y, 0, 0xFF, 0);
-                rgb_matrix_set_color(LED_INDEX_Z, 0, 0xFF, 0xFF);
-                rgb_matrix_set_color(LED_INDEX_LCTL, 0xFF, 0, 0xFF);
-                rgb_matrix_set_color(LED_INDEX_LALT, 0xFF, 0, 0xFF);
-
-                rgb_matrix_set_color(LED_INDEX_S, 0x30, 0x30, 0x30);
-                rgb_matrix_set_color(LED_INDEX_R, 0x30, 0x30, 0x30);
-                rgb_matrix_set_color(LED_INDEX_G, 0x30, 0x30, 0x30);
-
-                break;
-            case LAYER_XPLANE:
-                rgb_matrix_set_color(LED_INDEX_DEL, 0xFF, 0, 0xFF);
-                rgb_matrix_set_color(LED_INDEX_B, 0x10, 0, 0);
-                rgb_matrix_set_color(LED_INDEX_G, 0, 0xFF, 0);
-                rgb_matrix_set_color(LED_INDEX_P, 0xFF, 0, 0);
-                rgb_matrix_set_color(LED_INDEX_V, 0xFF, 0, 0);
-                break;
-            case LAYER_WASD:
-                rgb_matrix_set_color(LED_INDEX_W, 0xFF, 0xFF, 0);
-                rgb_matrix_set_color(LED_INDEX_A, 0xFF, 0xFF, 0);
-                rgb_matrix_set_color(LED_INDEX_S, 0xFF, 0xFF, 0);
-                rgb_matrix_set_color(LED_INDEX_D, 0xFF, 0xFF, 0);
-                rgb_matrix_set_color(LED_INDEX_D, 0xFF, 0xFF, 0);
-                rgb_matrix_set_color(LED_INDEX_E, 0xFF, 0, 0);
-                rgb_matrix_set_color(LED_INDEX_Q, 0xFF, 0, 0);
-
-                break;
-        }
+static void disable_keylight(void) {
+    for (unsigned int i = LED_INDEX_ESC; i <= LED_INDEX_RGHT; ++i) {
+        rgb_matrix_set_color(i, 0, 0, 0);
     }
+}
+
+static void disable_underglow(void) {
+    for (unsigned int i = LED_INDEX_RGHT + 1; i <= 80; ++i) {
+        rgb_matrix_set_color(i, 0, 0, 0);
+    }
+}
+
+void rgb_matrix_indicators_user(void) {
+    static int in_special_layer = 0;
+
+    if (!(rgb_matrix_get_flags() & LED_FLAG_KEYLIGHT)) {
+
+        disable_keylight();
+    } else if (!(rgb_matrix_get_flags() & LED_FLAG_UNDERGLOW)) {
+        disable_underglow();
+    }
+
+    int state = biton32(layer_state);
+
+    if (state != LAYER_DEFAULT) {
+        in_special_layer = 1;
+    }
+
+    switch (state) {
+    case LAYER_MAINT:
+        COLORIZE_RED(LED_INDEX_U);
+        COLORIZE_RED(LED_INDEX_I);
+        COLORIZE_RED(LED_INDEX_O);
+        COLORIZE_RED(LED_INDEX_J);
+        COLORIZE_RED(LED_INDEX_K);
+        COLORIZE_RED(LED_INDEX_L);
+        COLORIZE_RED(LED_INDEX_M);
+        COLORIZE_RED(LED_INDEX_COMM);
+        COLORIZE_RED(LED_INDEX_DOT);
+        break;
+    case LAYER_RESET:
+        rgb_matrix_set_color_all(0xFF, 0, 0);
+        break;
+    case LAYER_BLENDER:
+        rgb_matrix_set_color(LED_INDEX_DEL, 0xFF, 0xFF, 0xFF);
+        rgb_matrix_set_color(LED_INDEX_ESC, 0xFF, 0xFF, 0xFF);
+        rgb_matrix_set_color(LED_INDEX_X, 0xFF, 0, 0);
+        rgb_matrix_set_color(LED_INDEX_Y, 0, 0xFF, 0);
+        rgb_matrix_set_color(LED_INDEX_Z, 0, 0xFF, 0xFF);
+        rgb_matrix_set_color(LED_INDEX_LCTL, 0xFF, 0, 0xFF);
+        rgb_matrix_set_color(LED_INDEX_LALT, 0xFF, 0, 0xFF);
+
+        rgb_matrix_set_color(LED_INDEX_S, 0x30, 0x30, 0x30);
+        rgb_matrix_set_color(LED_INDEX_R, 0x30, 0x30, 0x30);
+        rgb_matrix_set_color(LED_INDEX_G, 0x30, 0x30, 0x30);
+
+        break;
+    case LAYER_XPLANE:
+        rgb_matrix_set_color(LED_INDEX_DEL, 0xFF, 0, 0xFF);
+        rgb_matrix_set_color(LED_INDEX_B, 0x10, 0, 0);
+        rgb_matrix_set_color(LED_INDEX_G, 0, 0xFF, 0);
+        rgb_matrix_set_color(LED_INDEX_P, 0xFF, 0, 0);
+        rgb_matrix_set_color(LED_INDEX_V, 0xFF, 0, 0);
+        break;
+    case LAYER_WASD:
+        rgb_matrix_set_color(LED_INDEX_W, 0xFF, 0xFF, 0);
+        rgb_matrix_set_color(LED_INDEX_A, 0xFF, 0xFF, 0);
+        rgb_matrix_set_color(LED_INDEX_S, 0xFF, 0xFF, 0);
+        rgb_matrix_set_color(LED_INDEX_D, 0xFF, 0xFF, 0);
+        rgb_matrix_set_color(LED_INDEX_D, 0xFF, 0xFF, 0);
+        rgb_matrix_set_color(LED_INDEX_E, 0xFF, 0, 0);
+        rgb_matrix_set_color(LED_INDEX_Q, 0xFF, 0, 0);
+
+        break;
+    case LAYER_DEFAULT:
+        if (in_special_layer) {
+            disable_keylight();
+            in_special_layer = 0;
+        }
+
+        break;
+    }
+
 }
