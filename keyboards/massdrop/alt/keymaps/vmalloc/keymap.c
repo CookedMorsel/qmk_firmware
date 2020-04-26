@@ -27,7 +27,7 @@ enum {
     LAYER_DEFAULT,
     LAYER_FN,
     LAYER_CAPS,
-    LAYER_MAINT,
+    LAYER_KP,
     LAYER_RESET,
     LAYER_BLENDER,
     LAYER_XPLANE,
@@ -55,12 +55,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         MO(3),   _______, _______, _______, _______, _______, _______, KC_PGDN, KC_UP,   KC_PGUP, _______, _______, _______, _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,          _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______, _______, \
-        _______, _______, _______,                            _______,                            _______, _______, _______, _______, _______  \
+        _______, _______, _______,                            _______,                            MO(LAYER_RESET), _______, _______, _______, _______ \
     ),
-    [LAYER_MAINT] = LAYOUT(
-        TO(LAYER_DEFAULT), TO(LAYER_BLENDER), TO(LAYER_XPLANE), _______, _______, _______, _______, _______, _______, TO(LAYER_WASD), _______, _______, _______, _______, _______, \
+    [LAYER_KP] = LAYOUT(
+        TO(LAYER_DEFAULT), TO(LAYER_BLENDER), TO(LAYER_XPLANE), _______, _______, _______, _______, _______, _______, TO(LAYER_WASD), _______, KC_PPLS, KC_PMNS, _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, KC_KP_7, KC_KP_8, KC_KP_9, _______, _______, _______, _______, _______, \
-        _______, _______, _______, _______, MO(4)  , _______, _______, KC_KP_4, KC_KP_5, KC_KP_6, _______, _______,          _______, _______, \
+        _______, _______, _______, _______, _______, _______, _______, KC_KP_4, KC_KP_5, KC_KP_6, _______, _______,          _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, KC_KP_1, KC_KP_2, KC_KP_3, KC_PSLS, _______,          _______, _______, \
         _______, _______, _______,                            KC_KP_0,                            KC_PDOT, _______, _______, _______, _______  \
         ),
@@ -189,9 +189,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-enum { LED_INDEX_ESC = 0, LED_INDEX_1, LED_INDEX_2, LED_INDEX_3, LED_INDEX_4, LED_INDEX_5, LED_INDEX_6, LED_INDEX_7, LED_INDEX_8, LED_INDEX_9, LED_INDEX_0, LED_INDEX_MINS, LED_INDEX_EQL, LED_INDEX_BSPC, LED_INDEX_DEL, LED_INDEX_TAB, LED_INDEX_Q, LED_INDEX_W, LED_INDEX_E, LED_INDEX_R, LED_INDEX_T, LED_INDEX_Y, LED_INDEX_U, LED_INDEX_I, LED_INDEX_O, LED_INDEX_P, LED_INDEX_LBRC, LED_INDEX_RBRC, LED_INDEX_BSLS, LED_INDEX_HOME, LED_INDEX_CAPS, LED_INDEX_A, LED_INDEX_S, LED_INDEX_D, LED_INDEX_F, LED_INDEX_G, LED_INDEX_H, LED_INDEX_J, LED_INDEX_K, LED_INDEX_L, LED_INDEX_SCLN, LED_INDEX_QUOT, LED_INDEX_ENT, LED_INDEX_PGUP, LED_INDEX_LSFT, LED_INDEX_Z, LED_INDEX_X, LED_INDEX_C, LED_INDEX_V, LED_INDEX_B, LED_INDEX_N, LED_INDEX_M, LED_INDEX_COMM, LED_INDEX_DOT, LED_INDEX_SLSH, LED_INDEX_RSFT, LED_INDEX_UP, LED_INDEX_PGDN, LED_INDEX_LCTL, LED_INDEX_LGUI, LED_INDEX_LALT, LED_INDEX_SPC, LED_INDEX_RALT, LED_INDEX_FN, LED_INDEX_LEFT, LED_INDEX_DOWN, LED_INDEX_RGHT };
+enum { LED_INDEX_ESC = 0, LED_INDEX_1, LED_INDEX_2, LED_INDEX_3, LED_INDEX_4, LED_INDEX_5, LED_INDEX_6, LED_INDEX_7, LED_INDEX_8, LED_INDEX_9, LED_INDEX_0, LED_INDEX_MINS, LED_INDEX_EQL, LED_INDEX_BSPC, LED_INDEX_DEL, LED_INDEX_TAB, LED_INDEX_Q, LED_INDEX_W, LED_INDEX_E, LED_INDEX_R, LED_INDEX_T, LED_INDEX_Y, LED_INDEX_U, LED_INDEX_I, LED_INDEX_O, LED_INDEX_P, LED_INDEX_LBRC, LED_INDEX_RBRC, LED_INDEX_BSLS, LED_INDEX_HOME, LED_INDEX_CAPS, LED_INDEX_A, LED_INDEX_S, LED_INDEX_D, LED_INDEX_F, LED_INDEX_G, LED_INDEX_H, LED_INDEX_J, LED_INDEX_K, LED_INDEX_L, LED_INDEX_SCLN, LED_INDEX_QUOT, LED_INDEX_ENT, LED_INDEX_PGUP, LED_INDEX_LSFT, LED_INDEX_Z, LED_INDEX_X, LED_INDEX_C, LED_INDEX_V, LED_INDEX_B, LED_INDEX_N, LED_INDEX_M, LED_INDEX_COMM, LED_INDEX_DOT, LED_INDEX_SLSH, LED_INDEX_RSFT, LED_INDEX_UP, LED_INDEX_PGDN, LED_INDEX_LCTL, LED_INDEX_LGUI, LED_INDEX_LALT, LED_INDEX_SPC, LED_INDEX_RALT, LED_INDEX_FN, LED_INDEX_LEFT, LED_INDEX_DOWN, LED_INDEX_RGHT, LED_FRAME_0};
 
 #define COLORIZE_RED(key) rgb_matrix_set_color(key, 0xFF, 0, 0)
+#define COLORIZE_BLUE(key) rgb_matrix_set_color(key, 0, 0, 0xFF)
 
 static void disable_keylight(void) {
     for (unsigned int i = LED_INDEX_ESC; i <= LED_INDEX_RGHT; ++i) {
@@ -222,16 +223,19 @@ void rgb_matrix_indicators_user(void) {
     }
 
     switch (state) {
-    case LAYER_MAINT:
-        COLORIZE_RED(LED_INDEX_U);
-        COLORIZE_RED(LED_INDEX_I);
-        COLORIZE_RED(LED_INDEX_O);
-        COLORIZE_RED(LED_INDEX_J);
-        COLORIZE_RED(LED_INDEX_K);
-        COLORIZE_RED(LED_INDEX_L);
-        COLORIZE_RED(LED_INDEX_M);
-        COLORIZE_RED(LED_INDEX_COMM);
-        COLORIZE_RED(LED_INDEX_DOT);
+    case LAYER_KP:
+        COLORIZE_BLUE(LED_INDEX_U);
+        COLORIZE_BLUE(LED_INDEX_I);
+        COLORIZE_BLUE(LED_INDEX_O);
+        COLORIZE_BLUE(LED_INDEX_J);
+        COLORIZE_BLUE(LED_INDEX_K);
+        COLORIZE_BLUE(LED_INDEX_L);
+        COLORIZE_BLUE(LED_INDEX_M);
+        COLORIZE_BLUE(LED_INDEX_COMM);
+        COLORIZE_BLUE(LED_INDEX_DOT);
+        for (int i = LED_FRAME_0; i < 256; ++i) {
+            COLORIZE_BLUE(i);
+        }
         break;
     case LAYER_RESET:
         rgb_matrix_set_color_all(0xFF, 0, 0);
