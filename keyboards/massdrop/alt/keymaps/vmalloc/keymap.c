@@ -1,7 +1,5 @@
 #include QMK_KEYBOARD_H
 
-
-
 enum alt_keycodes {
     U_T_AUTO = SAFE_RANGE,  // USB Extra Port Toggle Auto Detect / Always Active
     U_T_AGCR,               // USB Toggle Automatic GCR control
@@ -28,7 +26,6 @@ enum {
     LAYER_FN,
     LAYER_CAPS,
     LAYER_KP,
-    LAYER_RESET,
     LAYER_BLENDER,
     LAYER_XPLANE,
     LAYER_WASD,
@@ -52,10 +49,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [LAYER_CAPS] = LAYOUT(
         _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______, _______, \
-        MO(3),   _______, _______, _______, _______, _______, _______, KC_PGDN, KC_UP,   KC_PGUP, _______, _______, _______, _______, _______, \
-        _______, _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,          _______, _______, \
+        MO(3),   _______, _______, _______, _______, _______, _______, KC_PGDN, KC_UP,   KC_PGUP, _______, _______, _______, RESET, _______, \
+        _______, _______, KC_VOLD, KC_VOLU, KC_MUTE, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______,          _______, _______, \
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______, _______, \
-        _______, _______, _______,                            _______,                            MO(LAYER_RESET), _______, _______, _______, _______ \
+        _______, _______, _______,                            _______,                            _______, _______, _______, _______, _______ \
     ),
     [LAYER_KP] = LAYOUT(
         TO(LAYER_DEFAULT), TO(LAYER_BLENDER), TO(LAYER_XPLANE), _______, _______, _______, _______, _______, _______, TO(LAYER_WASD), _______, KC_PMNS, KC_PPLS, _______, _______, \
@@ -65,13 +62,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______,                            KC_KP_0,                            KC_PDOT, _______, _______, _______, _______  \
         ),
 
-    [LAYER_RESET] = LAYOUT(
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
-        _______, _______, _______, _______, _______, _______, _______, RESET,   _______, _______, _______, _______, _______, _______, _______, \
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______, _______, \
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______, _______, \
-        _______, _______, _______,                            _______,                            _______, _______, _______, _______, _______  \
-        ),
     [LAYER_BLENDER] = LAYOUT(
         _______, _______, _______, TD(TD_3_F3), _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_KP_DOT, \
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
@@ -189,7 +179,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-enum { LED_INDEX_ESC = 0, LED_INDEX_1, LED_INDEX_2, LED_INDEX_3, LED_INDEX_4, LED_INDEX_5, LED_INDEX_6, LED_INDEX_7, LED_INDEX_8, LED_INDEX_9, LED_INDEX_0, LED_INDEX_MINS, LED_INDEX_EQL, LED_INDEX_BSPC, LED_INDEX_DEL, LED_INDEX_TAB, LED_INDEX_Q, LED_INDEX_W, LED_INDEX_E, LED_INDEX_R, LED_INDEX_T, LED_INDEX_Y, LED_INDEX_U, LED_INDEX_I, LED_INDEX_O, LED_INDEX_P, LED_INDEX_LBRC, LED_INDEX_RBRC, LED_INDEX_BSLS, LED_INDEX_HOME, LED_INDEX_CAPS, LED_INDEX_A, LED_INDEX_S, LED_INDEX_D, LED_INDEX_F, LED_INDEX_G, LED_INDEX_H, LED_INDEX_J, LED_INDEX_K, LED_INDEX_L, LED_INDEX_SCLN, LED_INDEX_QUOT, LED_INDEX_ENT, LED_INDEX_PGUP, LED_INDEX_LSFT, LED_INDEX_Z, LED_INDEX_X, LED_INDEX_C, LED_INDEX_V, LED_INDEX_B, LED_INDEX_N, LED_INDEX_M, LED_INDEX_COMM, LED_INDEX_DOT, LED_INDEX_SLSH, LED_INDEX_RSFT, LED_INDEX_UP, LED_INDEX_PGDN, LED_INDEX_LCTL, LED_INDEX_LGUI, LED_INDEX_LALT, LED_INDEX_SPC, LED_INDEX_RALT, LED_INDEX_FN, LED_INDEX_LEFT, LED_INDEX_DOWN, LED_INDEX_RGHT, LED_FRAME_0};
+enum { LED_INDEX_ESC = 0, LED_INDEX_1, LED_INDEX_2, LED_INDEX_3, LED_INDEX_4, LED_INDEX_5, LED_INDEX_6, LED_INDEX_7, LED_INDEX_8, LED_INDEX_9, LED_INDEX_0, LED_INDEX_MINS, LED_INDEX_EQL, LED_INDEX_BSPC, LED_INDEX_DEL, LED_INDEX_TAB, LED_INDEX_Q, LED_INDEX_W, LED_INDEX_E, LED_INDEX_R, LED_INDEX_T, LED_INDEX_Y, LED_INDEX_U, LED_INDEX_I, LED_INDEX_O, LED_INDEX_P, LED_INDEX_LBRC, LED_INDEX_RBRC, LED_INDEX_BSLS, LED_INDEX_HOME, LED_INDEX_CAPS, LED_INDEX_A, LED_INDEX_S, LED_INDEX_D, LED_INDEX_F, LED_INDEX_G, LED_INDEX_H, LED_INDEX_J, LED_INDEX_K, LED_INDEX_L, LED_INDEX_SCLN, LED_INDEX_QUOT, LED_INDEX_ENT, LED_INDEX_PGUP, LED_INDEX_LSFT, LED_INDEX_Z, LED_INDEX_X, LED_INDEX_C, LED_INDEX_V, LED_INDEX_B, LED_INDEX_N, LED_INDEX_M, LED_INDEX_COMM, LED_INDEX_DOT, LED_INDEX_SLSH, LED_INDEX_RSFT, LED_INDEX_UP, LED_INDEX_PGDN, LED_INDEX_LCTL, LED_INDEX_LGUI, LED_INDEX_LALT, LED_INDEX_SPC, LED_INDEX_RALT, LED_INDEX_FN, LED_INDEX_LEFT, LED_INDEX_DOWN, LED_INDEX_RGHT, LED_FRAME_0 };
 
 #define COLORIZE_RED(key) rgb_matrix_set_color(key, 0xFF, 0, 0)
 #define COLORIZE_BLUE(key) rgb_matrix_set_color(key, 0, 0, 0xFF)
@@ -210,7 +200,6 @@ void rgb_matrix_indicators_user(void) {
     static int in_special_layer = 0;
 
     if (!(rgb_matrix_get_flags() & LED_FLAG_KEYLIGHT)) {
-
         disable_keylight();
     } else if (!(rgb_matrix_get_flags() & LED_FLAG_UNDERGLOW)) {
         disable_underglow();
@@ -223,61 +212,57 @@ void rgb_matrix_indicators_user(void) {
     }
 
     switch (state) {
-    case LAYER_KP:
-        COLORIZE_BLUE(LED_INDEX_U);
-        COLORIZE_BLUE(LED_INDEX_I);
-        COLORIZE_BLUE(LED_INDEX_O);
-        COLORIZE_BLUE(LED_INDEX_J);
-        COLORIZE_BLUE(LED_INDEX_K);
-        COLORIZE_BLUE(LED_INDEX_L);
-        COLORIZE_BLUE(LED_INDEX_M);
-        COLORIZE_BLUE(LED_INDEX_COMM);
-        COLORIZE_BLUE(LED_INDEX_DOT);
-        for (int i = LED_FRAME_0; i < 256; ++i) {
-            COLORIZE_BLUE(i);
-        }
-        break;
-    case LAYER_RESET:
-        rgb_matrix_set_color_all(0xFF, 0, 0);
-        break;
-    case LAYER_BLENDER:
-        rgb_matrix_set_color(LED_INDEX_DEL, 0xFF, 0xFF, 0xFF);
-        rgb_matrix_set_color(LED_INDEX_ESC, 0xFF, 0xFF, 0xFF);
-        rgb_matrix_set_color(LED_INDEX_X, 0xFF, 0, 0);
-        rgb_matrix_set_color(LED_INDEX_Y, 0, 0xFF, 0);
-        rgb_matrix_set_color(LED_INDEX_Z, 0, 0xFF, 0xFF);
-        rgb_matrix_set_color(LED_INDEX_LCTL, 0xFF, 0, 0xFF);
-        rgb_matrix_set_color(LED_INDEX_LALT, 0xFF, 0, 0xFF);
+        case LAYER_KP:
+            COLORIZE_BLUE(LED_INDEX_U);
+            COLORIZE_BLUE(LED_INDEX_I);
+            COLORIZE_BLUE(LED_INDEX_O);
+            COLORIZE_BLUE(LED_INDEX_J);
+            COLORIZE_BLUE(LED_INDEX_K);
+            COLORIZE_BLUE(LED_INDEX_L);
+            COLORIZE_BLUE(LED_INDEX_M);
+            COLORIZE_BLUE(LED_INDEX_COMM);
+            COLORIZE_BLUE(LED_INDEX_DOT);
+            for (int i = LED_FRAME_0; i < 256; ++i) {
+                COLORIZE_BLUE(i);
+            }
+            break;
+        case LAYER_BLENDER:
+            rgb_matrix_set_color(LED_INDEX_DEL, 0xFF, 0xFF, 0xFF);
+            rgb_matrix_set_color(LED_INDEX_ESC, 0xFF, 0xFF, 0xFF);
+            rgb_matrix_set_color(LED_INDEX_X, 0xFF, 0, 0);
+            rgb_matrix_set_color(LED_INDEX_Y, 0, 0xFF, 0);
+            rgb_matrix_set_color(LED_INDEX_Z, 0, 0xFF, 0xFF);
+            rgb_matrix_set_color(LED_INDEX_LCTL, 0xFF, 0, 0xFF);
+            rgb_matrix_set_color(LED_INDEX_LALT, 0xFF, 0, 0xFF);
 
-        rgb_matrix_set_color(LED_INDEX_S, 0x30, 0x30, 0x30);
-        rgb_matrix_set_color(LED_INDEX_R, 0x30, 0x30, 0x30);
-        rgb_matrix_set_color(LED_INDEX_G, 0x30, 0x30, 0x30);
+            rgb_matrix_set_color(LED_INDEX_S, 0x30, 0x30, 0x30);
+            rgb_matrix_set_color(LED_INDEX_R, 0x30, 0x30, 0x30);
+            rgb_matrix_set_color(LED_INDEX_G, 0x30, 0x30, 0x30);
 
-        break;
-    case LAYER_XPLANE:
-        rgb_matrix_set_color(LED_INDEX_DEL, 0xFF, 0, 0xFF);
-        rgb_matrix_set_color(LED_INDEX_B, 0x10, 0, 0);
-        rgb_matrix_set_color(LED_INDEX_G, 0, 0xFF, 0);
-        rgb_matrix_set_color(LED_INDEX_P, 0xFF, 0, 0);
-        rgb_matrix_set_color(LED_INDEX_V, 0xFF, 0, 0);
-        break;
-    case LAYER_WASD:
-        rgb_matrix_set_color(LED_INDEX_W, 0xFF, 0xFF, 0);
-        rgb_matrix_set_color(LED_INDEX_A, 0xFF, 0xFF, 0);
-        rgb_matrix_set_color(LED_INDEX_S, 0xFF, 0xFF, 0);
-        rgb_matrix_set_color(LED_INDEX_D, 0xFF, 0xFF, 0);
-        rgb_matrix_set_color(LED_INDEX_D, 0xFF, 0xFF, 0);
-        rgb_matrix_set_color(LED_INDEX_E, 0xFF, 0, 0);
-        rgb_matrix_set_color(LED_INDEX_Q, 0xFF, 0, 0);
+            break;
+        case LAYER_XPLANE:
+            rgb_matrix_set_color(LED_INDEX_DEL, 0xFF, 0, 0xFF);
+            rgb_matrix_set_color(LED_INDEX_B, 0x10, 0, 0);
+            rgb_matrix_set_color(LED_INDEX_G, 0, 0xFF, 0);
+            rgb_matrix_set_color(LED_INDEX_P, 0xFF, 0, 0);
+            rgb_matrix_set_color(LED_INDEX_V, 0xFF, 0, 0);
+            break;
+        case LAYER_WASD:
+            rgb_matrix_set_color(LED_INDEX_W, 0xFF, 0xFF, 0);
+            rgb_matrix_set_color(LED_INDEX_A, 0xFF, 0xFF, 0);
+            rgb_matrix_set_color(LED_INDEX_S, 0xFF, 0xFF, 0);
+            rgb_matrix_set_color(LED_INDEX_D, 0xFF, 0xFF, 0);
+            rgb_matrix_set_color(LED_INDEX_D, 0xFF, 0xFF, 0);
+            rgb_matrix_set_color(LED_INDEX_E, 0xFF, 0, 0);
+            rgb_matrix_set_color(LED_INDEX_Q, 0xFF, 0, 0);
 
-        break;
-    case LAYER_DEFAULT:
-        if (in_special_layer) {
-            disable_keylight();
-            in_special_layer = 0;
-        }
+            break;
+        case LAYER_DEFAULT:
+            if (in_special_layer) {
+                disable_keylight();
+                in_special_layer = 0;
+            }
 
-        break;
+            break;
     }
-
 }

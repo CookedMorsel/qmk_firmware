@@ -10,18 +10,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL,        KC_LGUI, KC_LALT,                            KC_SPC,                             KC_RALT, MO(1),   MO(2),   KC_RCTL
     ),
     [1] = LAYOUT_60_ansi(
-        KC_GESC, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_DEL,
-        _______, _______, _______,  _______, _______, _______, KC_CALC, _______, KC_UP,  _______, KC_PSCR, KC_SLCK, KC_PAUS, RESET,
-        _______, _______, _______,  _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RIGHT, KC_HOME, KC_PGUP,        _______,
-        _______,          KC_VOLD,  KC_VOLU, KC_MUTE, _______, _______, NK_TOGG, _______, _______, KC_END,  KC_PGDN,          KC_MNXT,
-        _______, _______, _______,                             _______,                            _______, _______, _______, _______
+        KC_GESC, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12 ,  KC_DEL,
+        _______, _______, _______,  _______, _______, _______, KC_CALC, _______, KC_UP,   _______, KC_PSCR, KC_SLCK, KC_PAUS, RESET,
+        _______, KC_MUTE, KC_VOLD,  KC_VOLU, _______, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_HOME, KC_PGUP,          _______,
+        _______,          _______,  _______, _______, _______, _______, _______, _______, _______, KC_END,  KC_PGDN,          KC_MNXT,
+        KC_LCTL, _______, _______,                             _______,                            _______, _______, _______, _______
     ),
     [2] = LAYOUT_60_ansi(
-        _______, KC_F1,    KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_DEL,
+        KC_GRV,  KC_F1,    KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_DEL,
         _______, RGB_SPD,  RGB_VAI, RGB_SPI, RGB_HUI, RGB_SAI, _______, _______, RGB_VAD, RGB_MOD, _______, _______, _______, RESET,
         _______, RGB_RMOD, RGB_VAD, RGB_MOD, RGB_HUD, RGB_SAD, _______, _______, RGB_SPI, RGB_SPD, _______, _______,          _______,
         _______,           RGB_TOG, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
-        _______, _______, _______,                            _______,                            _______, _______, _______, _______
+        _______, _______, _______,                            _______,                             _______, _______, _______, _______
     )
 };
 // clang-format on
