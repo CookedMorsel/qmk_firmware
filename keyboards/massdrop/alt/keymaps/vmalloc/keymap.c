@@ -99,6 +99,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
     rgb_matrix_config.speed = 0;
+    srand(timer_read());
+
+    rgb_matrix_config.hsv.h = 151;
+    rgb_matrix_config.hsv.s = 250;
+    rgb_matrix_config.hsv.v = 255;
+
     rgb_matrix_increase_speed();
 }
 
