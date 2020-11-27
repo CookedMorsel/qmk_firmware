@@ -3,11 +3,9 @@
 #define _NP 0
 #define _BL 1
 
-enum custom_keycodes {
-  NP = SAFE_RANGE,
-  BL
-};
+enum custom_keycodes { NP = SAFE_RANGE, BL };
 
+// clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   /* Qwerty */
 
@@ -21,12 +19,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [_BL] = LAYOUT_ortho_6x4(
-    _______, _______, _______, _______,
-    _______, _______, _______, _______,
-    _______, _______, _______, RGB_MOD,
-    _______, _______, _______, RGB_RMOD,
-    RGB_SPI, RGB_SAI, RGB_HUI, BL_INC,
-    RGB_SPD, RGB_SAD, RGB_HUD, BL_DEC
+    RESET, _______, _______, _______,
+    _______, _______, _______, BL_INC,
+    RGB_SPD, RGB_HUI, RGB_SPI, BL_INC,
+   RGB_RMOD, RGB_HUD, RGB_MOD, BL_INC,
+    RGB_VAD, _______, RGB_VAI, BL_DEC,
+    RGB_TOG, RGB_TOG, _______, BL_DEC
   )
 
 };
+// clang-format on
