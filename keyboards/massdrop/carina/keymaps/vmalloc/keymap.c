@@ -1,18 +1,19 @@
 #include QMK_KEYBOARD_H
 
 enum ctrl_keycodes {
-    U_T_AGCR = SAFE_RANGE, //USB Toggle Automatic GCR control
-    DBG_TOG,               //DEBUG Toggle On / Off
-    DBG_MTRX,              //DEBUG Toggle Matrix Prints
-    DBG_KBD,               //DEBUG Toggle Keyboard Prints
-    DBG_MOU,               //DEBUG Toggle Mouse Prints
-    MD_BOOT,               //Restart into bootloader after hold timeout
+    U_T_AGCR = SAFE_RANGE,  // USB Toggle Automatic GCR control
+    DBG_TOG,                // DEBUG Toggle On / Off
+    DBG_MTRX,               // DEBUG Toggle Matrix Prints
+    DBG_KBD,                // DEBUG Toggle Keyboard Prints
+    DBG_MOU,                // DEBUG Toggle Mouse Prints
+    MD_BOOT,                // Restart into bootloader after hold timeout
 };
 
-#define TG_NKRO MAGIC_TOGGLE_NKRO //Toggle 6KRO / NKRO mode
+#define TG_NKRO MAGIC_TOGGLE_NKRO  // Toggle 6KRO / NKRO mode
 
 keymap_config_t keymap_config;
 
+// clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT(
         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, \
@@ -45,9 +46,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     */
 };
+//clang-format on
 
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
+    rgb_matrix_config.speed = 0;
+
+    rgb_matrix_config.hsv.h = 151;
+    rgb_matrix_config.hsv.s = 250;
+    rgb_matrix_config.hsv.v = 255;
+
+    rgb_matrix_increase_speed();
 };
 
 // Runs constantly in the background, in a loop.
