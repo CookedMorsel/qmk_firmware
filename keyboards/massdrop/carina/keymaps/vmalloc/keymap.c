@@ -11,7 +11,7 @@ enum ctrl_keycodes {
 
 #define TG_NKRO MAGIC_TOGGLE_NKRO  // Toggle 6KRO / NKRO mode
 
-keymap_config_t keymap_config;
+//keymap_config_t keymap_config;
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {

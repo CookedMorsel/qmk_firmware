@@ -86,7 +86,7 @@ uint32_t power_sum_last;                //Sum of RGB values for previous LED pat
 
 int8_t gcr_change_counter;              //GCR increase and decrease calls are counted here and acted upon when a count limit is hit
 uint16_t v_5v_cat_hit;                  //Flag for when 5v catastrophic level has been reached, and timer for recovery period
-uint64_t v_5v_low_timer;                //Timer for disabling USB extra device after causing a low voltage situation for an amount of time (-1 indicates timer not active)
+extern uint64_t v_5v_low_timer;                //Timer for disabling USB extra device after causing a low voltage situation for an amount of time (-1 indicates timer not active)
 
 uint8_t led_mfg_test_mode = LED_MFG_TEST_MODE_OFF;
 
