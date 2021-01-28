@@ -11,7 +11,7 @@ enum ctrl_keycodes {
 
 #define TG_NKRO MAGIC_TOGGLE_NKRO  // Toggle 6KRO / NKRO mode
 
-//keymap_config_t keymap_config;
+// keymap_config_t keymap_config;
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -24,7 +24,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [1] = LAYOUT(
         KC_GESC, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12 ,  KC_DEL,
-        _______, _______, _______,  _______, _______, _______, KC_CALC, _______, KC_UP,   _______, KC_PSCR, KC_SLCK, KC_PAUS, RESET,
+        _______, _______, _______,  _______, _______, _______, KC_CALC, KC_PGUP, KC_UP,   KC_PGDN, KC_PSCR, KC_SLCK, KC_PAUS, RESET,
         _______, _______, KC_VOLD,  KC_VOLU, KC_MUTE, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, KC_HOME, KC_PGUP,          _______,
         _______,          _______,  _______, _______, _______, _______, _______, _______, _______, KC_END,  KC_PGDN,          KC_MNXT,
         KC_LCTL, _______, _______,                             _______,                            _______, _______, _______, _______
