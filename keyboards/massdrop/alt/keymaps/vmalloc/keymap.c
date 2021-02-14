@@ -19,8 +19,6 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_3_F3]   = ACTION_TAP_DANCE_DOUBLE(KC_3, KC_F3),
 };
 
-keymap_config_t keymap_config;
-
 enum {
     LAYER_DEFAULT,
     LAYER_FN,
@@ -99,8 +97,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Runs just one time when the keyboard initializes.
 void matrix_init_user(void) {
     rgb_matrix_config.speed = 0;
-    rgb_matrix_toggle();
-    srand(timer_read());
 
     rgb_matrix_config.hsv.h = 151;
     rgb_matrix_config.hsv.s = 250;
@@ -108,6 +104,8 @@ void matrix_init_user(void) {
 
     rgb_matrix_increase_speed();
 }
+
+void keyboard_post_init_user(void) { rgb_matrix_set_flags(LED_FLAG_NONE); }
 
 // Runs constantly in the background, in a loop.
 void matrix_scan_user(void){};

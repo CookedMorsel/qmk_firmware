@@ -10,8 +10,6 @@ enum ctrl_keycodes {
     MD_BOOT,                // Restart into bootloader after hold timeout
 };
 
-keymap_config_t keymap_config;
-
 enum {
     LAYER_DEFAULT,
     LAYER_FN,
@@ -67,6 +65,8 @@ void matrix_init_user(void) {
 
     rgb_matrix_increase_speed();
 }
+
+void keyboard_post_init_user(void) { rgb_matrix_set_flags(LED_FLAG_NONE); }
 
 // Runs constantly in the background, in a loop.
 void matrix_scan_user(void){};
