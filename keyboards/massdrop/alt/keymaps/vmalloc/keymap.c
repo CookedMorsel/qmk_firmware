@@ -1,5 +1,7 @@
 #include QMK_KEYBOARD_H
 
+#include "notifications.h"
+
 enum alt_keycodes {
     U_T_AUTO = SAFE_RANGE,  // USB Extra Port Toggle Auto Detect / Always Active
     U_T_AGCR,               // USB Toggle Automatic GCR control
@@ -71,28 +73,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-// Runs just one time when the keyboard initializes.
-void matrix_init_user(void) {
-    rgb_matrix_config.speed = 0;
-
-    rgb_matrix_config.hsv.h = 151;
-    rgb_matrix_config.hsv.s = 250;
-    rgb_matrix_config.hsv.v = 255;
-
-    rgb_matrix_increase_speed();
-}
-
-void keyboard_post_init_user(void) { rgb_matrix_set_flags(LED_FLAG_NONE); }
-
-// Runs constantly in the background, in a loop.
-void matrix_scan_user(void){};
-
 #define MODS_SHIFT (get_mods() & MOD_BIT(KC_LSHIFT) || get_mods() & MOD_BIT(KC_RSHIFT))
 #define MODS_CTRL (get_mods() & MOD_BIT(KC_LCTL) || get_mods() & MOD_BIT(KC_RCTRL))
 #define MODS_ALT (get_mods() & MOD_BIT(KC_LALT) || get_mods() & MOD_BIT(KC_RALT))
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint32_t key_timer;
+
+    notifications_key_pressed();
 
     switch (keycode) {
         case U_T_AUTO:
@@ -147,7 +135,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     } break;
                     case LED_FLAG_UNDERGLOW: {
                         rgb_matrix_set_flags(LED_FLAG_NONE);
-                        rgb_matrix_disable_noeeprom();
+                        rgb_matrix_set_color_all(0, 0, 0);
                     } break;
                     default: {
                         rgb_matrix_set_flags(LED_FLAG_ALL);
@@ -161,55 +149,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
-enum { LED_INDEX_ESC = 0, LED_INDEX_1, LED_INDEX_2, LED_INDEX_3, LED_INDEX_4, LED_INDEX_5, LED_INDEX_6, LED_INDEX_7, LED_INDEX_8, LED_INDEX_9, LED_INDEX_0, LED_INDEX_MINS, LED_INDEX_EQL, LED_INDEX_BSPC, LED_INDEX_DEL, LED_INDEX_TAB, LED_INDEX_Q, LED_INDEX_W, LED_INDEX_E, LED_INDEX_R, LED_INDEX_T, LED_INDEX_Y, LED_INDEX_U, LED_INDEX_I, LED_INDEX_O, LED_INDEX_P, LED_INDEX_LBRC, LED_INDEX_RBRC, LED_INDEX_BSLS, LED_INDEX_HOME, LED_INDEX_CAPS, LED_INDEX_A, LED_INDEX_S, LED_INDEX_D, LED_INDEX_F, LED_INDEX_G, LED_INDEX_H, LED_INDEX_J, LED_INDEX_K, LED_INDEX_L, LED_INDEX_SCLN, LED_INDEX_QUOT, LED_INDEX_ENT, LED_INDEX_PGUP, LED_INDEX_LSFT, LED_INDEX_Z, LED_INDEX_X, LED_INDEX_C, LED_INDEX_V, LED_INDEX_B, LED_INDEX_N, LED_INDEX_M, LED_INDEX_COMM, LED_INDEX_DOT, LED_INDEX_SLSH, LED_INDEX_RSFT, LED_INDEX_UP, LED_INDEX_PGDN, LED_INDEX_LCTL, LED_INDEX_LGUI, LED_INDEX_LALT, LED_INDEX_SPC, LED_INDEX_RALT, LED_INDEX_FN, LED_INDEX_LEFT, LED_INDEX_DOWN, LED_INDEX_RGHT, LED_FRAME_0 };
+enum { LED_INDEX_ESC = 0, LED_INDEX_1, LED_INDEX_2, LED_INDEX_3, LED_INDEX_4, LED_INDEX_5, LED_INDEX_6, LED_INDEX_7, LED_INDEX_8, LED_INDEX_9, LED_INDEX_0, LED_INDEX_MINS, LED_INDEX_EQL, LED_INDEX_BSPC, LED_INDEX_DEL, LED_INDEX_TAB, LED_INDEX_Q, LED_INDEX_W, LED_INDEX_E, LED_INDEX_R, LED_INDEX_T, LED_INDEX_Y, LED_INDEX_U, LED_INDEX_I, LED_INDEX_O, LED_INDEX_P, LED_INDEX_LBRC, LED_INDEX_RBRC, LED_INDEX_BSLS, LED_INDEX_HOME, LED_INDEX_CAPS, LED_INDEX_A, LED_INDEX_S, LED_INDEX_D, LED_INDEX_F, LED_INDEX_G, LED_INDEX_H, LED_INDEX_J, LED_INDEX_K, LED_INDEX_L, LED_INDEX_SCLN, LED_INDEX_QUOT, LED_INDEX_ENT, LED_INDEX_PGUP, LED_INDEX_LSFT, LED_INDEX_Z, LED_INDEX_X, LED_INDEX_C, LED_INDEX_V, LED_INDEX_B, LED_INDEX_N, LED_INDEX_M, LED_INDEX_COMM, LED_INDEX_DOT, LED_INDEX_SLSH, LED_INDEX_RSFT, LED_INDEX_UP, LED_INDEX_PGDN, LED_INDEX_LCTL, LED_INDEX_LGUI, LED_INDEX_LALT, LED_INDEX_SPC, LED_INDEX_RALT, LED_INDEX_FN, LED_INDEX_LEFT, LED_INDEX_DOWN, LED_INDEX_RGHT, LED_4FRAME_0 };
 
 #define COLORIZE_RED(key) rgb_matrix_set_color(key, 0xFF, 0, 0)
 #define COLORIZE_BLUE(key) rgb_matrix_set_color(key, 0, 0, 0xFF)
-
-static void disable_keylight(void) {
-    for (unsigned int i = LED_INDEX_ESC; i <= LED_INDEX_RGHT; ++i) {
-        rgb_matrix_set_color(i, 0, 0, 0);
-    }
-}
-
-static void disable_underglow(void) {
-    for (unsigned int i = LED_INDEX_RGHT + 1; i <= 80; ++i) {
-        rgb_matrix_set_color(i, 0, 0, 0);
-    }
-}
-
-void rgb_matrix_indicators_user(void) {
-    static int in_special_layer = 0;
-
-    if (!(rgb_matrix_get_flags() & LED_FLAG_KEYLIGHT)) {
-        disable_keylight();
-    } else if (!(rgb_matrix_get_flags() & LED_FLAG_UNDERGLOW)) {
-        disable_underglow();
-    }
-
-    int state = biton32(layer_state);
-
-    if (state != LAYER_DEFAULT) {
-        in_special_layer = 1;
-    }
-
-    switch (state) {
-        case L_GM:
-            rgb_matrix_set_color(LED_INDEX_W, 0xFF, 0xFF, 0);
-            rgb_matrix_set_color(LED_INDEX_A, 0xFF, 0xFF, 0);
-            rgb_matrix_set_color(LED_INDEX_S, 0xFF, 0xFF, 0);
-            rgb_matrix_set_color(LED_INDEX_D, 0xFF, 0xFF, 0);
-            rgb_matrix_set_color(LED_INDEX_D, 0xFF, 0xFF, 0);
-            rgb_matrix_set_color(LED_INDEX_E, 0xFF, 0, 0);
-            rgb_matrix_set_color(LED_INDEX_Q, 0xFF, 0, 0);
-
-            break;
-        case LAYER_DEFAULT:
-            if (in_special_layer) {
-                disable_keylight();
-                in_special_layer = 0;
-            }
-
-            break;
-    }
-}
