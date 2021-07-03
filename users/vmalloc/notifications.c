@@ -1,9 +1,10 @@
-#include QMK_KEYBOARD_H
-#include "print.h"
+#ifdef UNDERGLOW_LED_INDEX_START
+#    include QMK_KEYBOARD_H
+#    include "print.h"
 
-#define FADE_TIME_MS (500)
-#define min(a, b) ((a) > (b)) ? (b) : (a)
-#define max(a, b) ((a) < (b)) ? (b) : (a)
+#    define FADE_TIME_MS (500)
+#    define min(a, b) ((a) > (b)) ? (b) : (a)
+#    define max(a, b) ((a) < (b)) ? (b) : (a)
 
 typedef struct notification_s {
     bool     enabled;
@@ -34,12 +35,6 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
     }
 }
 
-static void rgb_matrix_set_color_range(int start, int finish, int r, int g, int b) {
-    for (int i = start; i < finish; ++i) {
-        rgb_matrix_set_color(i, r, g, b);
-    }
-}
-
 void notifications_key_pressed(void) {
     if (g_notification.enabled && g_notification.num_milliseconds == 0) {
         g_notification.num_milliseconds = 1000;
@@ -48,7 +43,13 @@ void notifications_key_pressed(void) {
     }
 }
 
-#define FADE_SPEED (255.0)
+#    define FADE_SPEED (255.0)
+
+static void rgb_matrix_set_color_range(int start, int finish, int r, int g, int b) {
+    for (int i = start; i < finish; ++i) {
+        rgb_matrix_set_color(i, r, g, b);
+    }
+}
 
 void rgb_matrix_indicators_user(void) {
     if (g_notification.enabled) {
@@ -72,3 +73,4 @@ void rgb_matrix_indicators_user(void) {
         }
     }
 }
+#endif
