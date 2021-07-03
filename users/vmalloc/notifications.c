@@ -1,6 +1,7 @@
 #ifdef UNDERGLOW_LED_INDEX_START
 #    include QMK_KEYBOARD_H
 #    include "print.h"
+#    include <math.h>
 
 #    define FADE_TIME_MS (500)
 #    define min(a, b) ((a) > (b)) ? (b) : (a)
@@ -11,6 +12,7 @@ typedef struct notification_s {
     uint8_t  r;
     uint8_t  g;
     uint8_t  b;
+    uint8_t  pulse;
     uint16_t last_timer;
     uint32_t num_milliseconds;
     uint32_t elapsed;
@@ -25,7 +27,8 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
             g_notification.r                = data[1];
             g_notification.g                = data[2];
             g_notification.b                = data[3];
-            g_notification.num_milliseconds = (uint32_t)(data[4] << 8) + data[5];
+            g_notification.num_milliseconds = (uint32_t)((data[4] << 24) + (data[5] << 16) + (data[6] << 8) + data[7]);
+            g_notification.pulse            = data[8];
             g_notification.elapsed          = 0;
             g_notification.enabled          = true;
             g_notification.last_timer       = timer_read();
@@ -65,6 +68,9 @@ void rgb_matrix_indicators_user(void) {
                 rgb_matrix_set_color_range(UNDERGLOW_LED_INDEX_START, DRIVER_LED_TOTAL, 0, 0, 0);
             } else {
                 float factor = max(min(-abs(g_notification.elapsed - (duration / 2.0)) + (duration / 2.0), FADE_SPEED), 0) / FADE_SPEED;
+                if (g_notification.pulse) {
+                    factor *= max(0.0, 1.0 - fabs(cos((g_notification.elapsed * g_notification.pulse) / 2000.0)) * 2.0);
+                }
                 rgb_matrix_set_color_range(UNDERGLOW_LED_INDEX_START, DRIVER_LED_TOTAL, g_notification.r * factor, g_notification.g * factor, g_notification.b * factor);
             }
         } else {
